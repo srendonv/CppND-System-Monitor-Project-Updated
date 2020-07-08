@@ -5,8 +5,19 @@
 
 using std::vector, std::string;
 
-// TODO: Return the aggregate CPU utilization
+// Return the aggregate CPU utilization
 float Processor::Utilization() { 
-    vector<string> prev = LinuxParser::CpuUtilization();
-    return 0.5;
+    auto active = LinuxParser::ActiveJiffies();
+    auto idle = LinuxParser::IdleJiffies();
+
+    auto deltaActive = active - prevActive;
+    auto deltaIdle = idle - prevIdle;
+
+    auto total = deltaActive + deltaIdle;
+
+    prevActive = active;
+    prevIdle = idle;
+
+    float percentage = static_cast<float>(deltaActive)/total;
+    return percentage;
 }

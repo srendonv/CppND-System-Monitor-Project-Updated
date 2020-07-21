@@ -3,12 +3,12 @@
 
 class Processor {
  public:
-  float Utilization();  
+  float Utilization();
 
   // Declare any necessary private members
  private:
-    long prevActive{0};
-    long prevIdle{0};
+  long prevActive{0};
+  long prevIdle{0};
 };
 
 #endif

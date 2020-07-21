@@ -1,23 +1,25 @@
 #include "processor.h"
-#include "linux_parser.h"
 
 #include <vector>
 
-using std::vector, std::string;
+#include "linux_parser.h"
+
+using std::string;
+using std::vector;
 
 // Return the aggregate CPU utilization
-float Processor::Utilization() { 
-    auto active = LinuxParser::ActiveJiffies();
-    auto idle = LinuxParser::IdleJiffies();
+float Processor::Utilization() {
+  auto active = LinuxParser::ActiveJiffies();
+  auto idle = LinuxParser::IdleJiffies();
 
-    auto deltaActive = active - prevActive;
-    auto deltaIdle = idle - prevIdle;
+  auto deltaActive = active - prevActive;
+  auto deltaIdle = idle - prevIdle;
 
-    auto total = deltaActive + deltaIdle;
+  auto total = deltaActive + deltaIdle;
 
-    prevActive = active;
-    prevIdle = idle;
+  prevActive = active;
+  prevIdle = idle;
 
-    float percentage = static_cast<float>(deltaActive)/total;
-    return percentage;
+  float percentage = static_cast<float>(deltaActive) / total;
+  return percentage;
 }

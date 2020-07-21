@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <iostream>
+
 using std::stof;
 using std::string;
 using std::to_string;
@@ -252,15 +254,18 @@ string LinuxParser::User(int pid) {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid [[maybe_unused]]) {
   vector<string> times;
-  string value;
-  int uptimeIndex = 22;
+  string line, value;
+  int uptimeIndex = 21;
   long time;
   std::ifstream stream(kProcDirectory + to_string(pid) + kStatFilename);
   if(stream.is_open()){
-    while(stream >> value){
+    getline(stream, line);
+    std::istringstream linestream(line);
+    while(linestream >> value){
       times.push_back(value);
     }
   }
   time = stol(times[uptimeIndex])/sysconf(_SC_CLK_TCK);
+  
   return time;
 }

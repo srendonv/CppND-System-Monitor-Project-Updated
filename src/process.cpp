@@ -18,14 +18,17 @@ Process::Process(int pid):pid_(pid){
 }
 
 // Return this process's ID
-int Process::Pid() {
-  // pid_ = 1414;
+int Process::Pid() const{
   return pid_;
 }
 
-// TODO: Return this process's CPU utilization
-float Process::CpuUtilization() { 
-  return LinuxParser::ActiveJiffies(Pid());
+// Return this process's CPU utilization
+float Process::CpuUtilization() const{ 
+  auto activeTime = LinuxParser::ActiveJiffies(Pid())/sysconf(_SC_CLK_TCK);
+  auto systemTime = LinuxParser::UpTime() - LinuxParser::UpTime(Pid());
+  auto usage = static_cast<float>(activeTime) / systemTime;
+
+  return usage;
 }
 
 // Return the command that generated this process
@@ -48,8 +51,8 @@ long int Process::UpTime() {
   return LinuxParser::UpTime(Pid());
 }
 
-// TODO: Overload the "less than" comparison operator for Process objects
+// Overload the "less than" comparison operator for Process objects
 // REMOVE: [[maybe_unused]] once you define the function
-bool Process::operator<(Process const& a [[maybe_unused]]) const {
-  return true;
+bool Process::operator<(Process const& a ) const {
+  return CpuUtilization() < a.CpuUtilization();
 }

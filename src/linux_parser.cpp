@@ -6,8 +6,6 @@
 #include <string>
 #include <vector>
 
-#include <iostream>
-
 using std::stof;
 using std::string;
 using std::to_string;
@@ -271,7 +269,7 @@ string LinuxParser::User(int pid) {
 
 // Read and return the uptime of a process
 // REMOVE: [[maybe_unused]] once you define the function
-long LinuxParser::UpTime(int pid [[maybe_unused]]) { 
+long LinuxParser::UpTime(int pid) { 
   vector<string> times;
   string value;
   int uptimeIndex = 21;

@@ -7,6 +7,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <algorithm>    // std::sort
 
 #include "process.h"
 #include "processor.h"
@@ -16,17 +17,17 @@ using std::size_t;
 using std::string;
 using std::vector;
 
-// TODO: Return the system's CPU
+// Return the system's CPU
 Processor& System::Cpu() { return cpu_; }
 
-// TODO: Return a container composed of the system's processes
+// Return a container composed of the system's processes
 vector<Process>& System::Processes() { 
     vector<int> PIDs = LinuxParser::Pids();
 
     for (int pid : PIDs) {
-        // Process p(pid);
         processes_.push_back(pid);
     }
+    std::sort(processes_.begin(),processes_.end());
 
     return processes_;
 }
@@ -51,12 +52,12 @@ int System::RunningProcesses() {
     return LinuxParser::RunningProcesses();
 }
 
-// TODO: Return the total number of processes on the system
+// Return the total number of processes on the system
 int System::TotalProcesses() {
     return LinuxParser::TotalProcesses();
 }
 
-// TODO: Return the number of seconds since the system started running
+// Return the number of seconds since the system started running
 long int System::UpTime() {
     return LinuxParser::UpTime();
 }
